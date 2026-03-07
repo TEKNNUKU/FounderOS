@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Founder Control Tower</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<h1>Founder Control Tower</h1>
+
+<section>
+<h2>This Week's Mission</h2>
+<ul id="missionList"></ul>
+<a href="weekly.html">Edit Weekly Mission</a>
+</section>
+
+<section>
+<h2>Venture Control Tower</h2>
+
+<table>
+<thead>
+<tr>
+<th>Venture</th>
+<th>Objective</th>
+<th>Outcome</th>
+<th>Metric</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="ventureTable"></tbody>
+
+</table>
+
+<input id="ventureName" placeholder="New Venture">
+<button onclick="addVenture()">Add Venture</button>
+
+</section>
+
+<a href="tasks.html">View All Tasks</a>
+
+<script type="module" src="js/dashboard.js"></script>
+
+</body>
+</html>
