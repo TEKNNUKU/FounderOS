@@ -1,47 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Founder Control Tower</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Founder OS — Control Tower</title>
+  <meta name="description" content="Your personal founder operating system. Mission command, venture tracking, task management." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2300ff9d'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-size='20' font-family='monospace' font-weight='bold' fill='%23000'>◈</text></svg>" />
 </head>
-
 <body>
 
-<h1>Founder Control Tower</h1>
+  <div class="app-layout">
 
-<section>
-<h2>This Week's Mission</h2>
-<ul id="missionList"></ul>
-<a href="weekly.html">Edit Weekly Mission</a>
-</section>
+    <!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
 
-<section>
-<h2>Venture Control Tower</h2>
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-tag">Founder OS</div>
+        <div class="sidebar-brand-name">Control Tower</div>
+      </div>
 
-<table>
-<thead>
-<tr>
-<th>Venture</th>
-<th>Objective</th>
-<th>Outcome</th>
-<th>Metric</th>
-<th>Status</th>
-</tr>
-</thead>
+      <nav class="sidebar-nav">
 
-<tbody id="ventureTable"></tbody>
+        <div class="sidebar-section-label">Navigation</div>
 
-</table>
+        <button class="nav-item active" data-page="dashboard">
+          <span class="nav-icon">◈</span>
+          Mission Command
+        </button>
 
-<input id="ventureName" placeholder="New Venture">
-<button onclick="addVenture()">Add Venture</button>
+        <button class="nav-item" data-page="ventures">
+          <span class="nav-icon">⬡</span>
+          Ventures
+        </button>
 
-</section>
+        <button class="nav-item" data-page="tasks">
+          <span class="nav-icon">◻</span>
+          Task Board
+        </button>
 
-<a href="tasks.html">View All Tasks</a>
+        <button class="nav-item" data-page="mission">
+          <span class="nav-icon">◎</span>
+          Weekly Mission
+        </button>
 
-<script type="module" src="js/dashboard.js"></script>
+        <div class="sidebar-section-label" style="margin-top:20px;">Quick Access</div>
+
+        <!-- Venture Quick Links - populated by JS -->
+        <div id="quickVentureLinks"></div>
+
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="date-label" id="sidebarDate"></div>
+      </div>
+
+    </aside>
+
+    <!-- ── Sidebar Overlay (mobile) ───────────────────────────────────────── -->
+    <div class="sidebar-overlay" id="sidebarOverlay" style="display:none;"></div>
+
+    <!-- ── Mobile Top Bar ─────────────────────────────────────────────────── -->
+    <div class="mobile-topbar">
+      <span class="mobile-brand">Founder OS</span>
+      <button class="hamburger" id="menuBtn">☰</button>
+    </div>
+
+    <!-- ── Main Content ───────────────────────────────────────────────────── -->
+    <main class="main-content">
+      <div id="firebaseBanner"></div>
+      <div id="mainContent">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <span>Initializing Founder OS...</span>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ── Mobile Bottom Nav ──────────────────────────────────────────────────── -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-items">
+      <button class="mobile-nav-item active" data-page="dashboard">
+        <span class="mobile-nav-icon">◈</span>
+        Dashboard
+      </button>
+      <button class="mobile-nav-item" data-page="ventures">
+        <span class="mobile-nav-icon">⬡</span>
+        Ventures
+      </button>
+      <button class="mobile-nav-item" data-page="tasks">
+        <span class="mobile-nav-icon">◻</span>
+        Tasks
+      </button>
+      <button class="mobile-nav-item" data-page="mission">
+        <span class="mobile-nav-icon">◎</span>
+        Mission
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Toast Container ───────────────────────────────────────────────────── -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ── App Entry ─────────────────────────────────────────────────────────── -->
+  <script type="module" src="js/app.js"></script>
+
+  <!-- ── Load Quick Venture Links after a tick ─────────────────────────────── -->
+  <script type="module">
+    import DB from "./js/db.js";
+    import { navigate } from "./js/app.js";
+
+    async function populateQuickLinks() {
+      try {
+        const ventures = await DB.getVentures();
+        const container = document.getElementById("quickVentureLinks");
+        if (!container) return;
+        container.innerHTML = ventures.slice(0, 5).map(v => `
+          <button class="nav-item" data-vid="${v.id}" style="font-size:12px;padding:7px 12px;">
+            <span class="nav-icon" style="font-size:10px;">→</span>
+            ${v.name}
+          </button>
+        `).join("");
+        container.querySelectorAll("[data-vid]").forEach(btn => {
+          btn.addEventListener("click", () => navigate("board", btn.dataset.vid));
+        });
+      } catch {}
+    }
+
+    // Populate after app initializes
+    setTimeout(populateQuickLinks, 800);
+  </script>
 
 </body>
 </html>
