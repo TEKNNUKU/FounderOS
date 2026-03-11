@@ -23,12 +23,12 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase
 
 // ─── PASTE YOUR FIREBASE CONFIG HERE ─────────────────────────────────────────
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyC78w7fvmlZK6fzg0Xpwq99DNDrcFURpj8",
+  authDomain:        "founderos-c69cc.firebaseapp.com",
+  projectId:         "founderos-c69cc",
+  storageBucket:     "founderos-c69cc.firebasestorage.app",
+  messagingSenderId: "555326494817",
+  appId:             "1:555326494817:web:db434257de276dfbb07220"
 };
 // ─────────────────────────────────────────────────────────────────────────────
 
