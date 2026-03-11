@@ -1,4 +1,4 @@
-// ╔══════════════════════════════════════════════════════════════╗
+// ╔═══════════════════════════════════════════════════════════════╗
 // ║            js/firebase.js — Firebase Configuration          ║
 // ║                                                              ║
 // ║  SETUP INSTRUCTIONS:                                         ║
@@ -32,16 +32,23 @@ const firebaseConfig = {
 };
 // ─────────────────────────────────────────────────────────────────────────────
 
-let app, db;
+let db = null;
 
-try {
-  app = initializeApp(firebaseConfig);
-  db  = getFirestore(app);
-  console.log("✅ Firebase connected:", firebaseConfig.projectId);
-} catch (err) {
-  console.warn("⚠️ Firebase init failed — running in offline mode.", err.message);
-  db = null;
+// Only attempt Firebase init if config has been filled in
+const configIsReal = firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY";
+
+if (configIsReal) {
+  try {
+    const app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    console.log("✅ Firebase connected:", firebaseConfig.projectId);
+  } catch (err) {
+    console.warn("⚠️ Firebase init failed — running in offline mode.", err.message);
+    db = null;
+  }
+} else {
+  console.info("ℹ️ Firebase not configured — running in localStorage offline mode.");
 }
 
 export { db };
-export const isFirebaseReady = () => db !== null && firebaseConfig.apiKey !== "YOUR_API_KEY";
+export const isFirebaseReady = () => db !== null;
