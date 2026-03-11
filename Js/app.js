@@ -105,4 +105,6 @@ function init() {
   navigate("dashboard");
 }
 
-document.addEventListener("DOMContentLoaded", init);
+// ES modules are already deferred — DOM is ready by the time this runs.
+// Do NOT use DOMContentLoaded here; it has already fired.
+init();
